@@ -1,0 +1,171 @@
+/* static/style.css */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: #0d1117;
+  color: #c9d1d9;
+  font-family: 'Courier New', monospace;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+header {
+  text-align: center;
+  padding: 1rem;
+  background: #161b22;
+  border-bottom: 1px solid #30363d;
+}
+
+header h1 {
+  font-size: 1.8rem;
+  color: #58a6ff;
+  text-shadow: 0 0 5px rgba(88, 166, 255, 0.3);
+}
+
+.subtitle {
+  font-size: 0.9rem;
+  color: #8b949e;
+}
+
+.main-grid {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+.sidebar {
+  width: 280px;
+  background: #161b22;
+  border-right: 1px solid #30363d;
+  padding: 1rem;
+  overflow-y: auto;
+}
+
+.sidebar h2 {
+  color: #79c0ff;
+  margin-bottom: 1rem;
+  font-size: 1.2rem;
+}
+
+#anim-list {
+  list-style: none;
+}
+
+#anim-list li {
+  margin: 0.5rem 0;
+}
+
+#anim-list a {
+  color: #c9d1d9;
+  text-decoration: none;
+  font-size: 0.95rem;
+  display: block;
+  padding: 0.4rem 0.6rem;
+  border-radius: 6px;
+  transition: all 0.2s;
+}
+
+#anim-list a:hover {
+  background: #30363d;
+  color: #58a6ff;
+}
+
+.actions {
+  margin-top: 2rem;
+  display: flex;
+  gap: 0.5rem;
+}
+
+button {
+  flex: 1;
+  padding: 0.6rem;
+  background: #1f6feb;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.2s;
+}
+
+button:disabled {
+  background: #30363d;
+  cursor: not-allowed;
+}
+
+button:hover:not(:disabled) {
+  background: #388bfd;
+}
+
+.terminal {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: #0d1117;
+  color: #c9d1d9;
+  overflow: hidden;
+}
+
+.terminal-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: #161b22;
+  border-bottom: 1px solid #30363d;
+}
+
+.dots {
+  display: flex;
+  gap: 0.3rem;
+}
+
+.dots span {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.red { background: #ff5f56; }
+.yellow { background: #febc2e; }
+.green { background: #27c93f; }
+
+#anim-title {
+  margin: 0;
+  font-size: 1rem;
+  color: #8b949e;
+}
+
+#output {
+  flex: 1;
+  background: #0d1117;
+  color: #c9d1d9;
+  padding: 1rem;
+  overflow-y: auto;
+  white-space: pre;
+  font-family: 'Courier New', monospace;
+  line-height: 1.2;
+  font-size: 0.9rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .main-grid {
+    flex-direction: column;
+  }
+  .sidebar {
+    width: 100%;
+    max-height: 30vh;
+  }
+}

@@ -1,0 +1,50 @@
+<!-- templates/index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ASCII Art Gallery</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>🎨 ASCII ANIMATION GALLERY</h1>
+      <p class="subtitle">Press <kbd>ESC</kbd> to stop any animation</p>
+    </header>
+
+    <div class="main-grid">
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <h2>/animations</h2>
+        <ul id="anim-list">
+          {% for key, (name, _) in animations %}
+            <li><a href="#" data-key="{{ key }}" class="anim-link">{{ key }}. {{ name }}</a></li>
+          {% endfor %}
+        </ul>
+
+        <div class="actions">
+          <button id="random-btn">🎲 Random</button>
+          <button id="stop-btn" disabled>⏹️ Stop</button>
+        </div>
+      </aside>
+
+      <!-- Terminal -->
+      <main class="terminal">
+        <div class="terminal-header">
+          <div class="dots">
+            <span class="red"></span>
+            <span class="yellow"></span>
+            <span class="green"></span>
+          </div>
+          <h3 id="anim-title">Idle</h3>
+        </div>
+        <pre id="output"></pre>
+      </main>
+    </div>
+  </div>
+
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
