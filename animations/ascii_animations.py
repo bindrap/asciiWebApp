@@ -52,13 +52,13 @@ def create_ascii_reveal_animation(ascii_lines):
         positions = [(r, c) for r in range(h) for c in range(len(ascii_lines[r]))]
         random.shuffle(positions)
 
-        clear()
+        #clear()
         display()
         time.sleep(1)
 
         # Reveal
         for idx in range(0, len(positions), 5):
-            clear()
+            #clear()
             for r, c in positions[idx:idx+5]:
                 grid[r][c] = ascii_lines[r][c]
             display()
@@ -69,7 +69,7 @@ def create_ascii_reveal_animation(ascii_lines):
         # Dissolve
         random.shuffle(positions)
         for idx in range(0, len(positions), 5):
-            clear()
+            #clear()
             for r, c in positions[idx:idx+5]:
                 grid[r][c] = random.choice(chaos_chars)
             display()
