@@ -250,17 +250,292 @@ def create_ascii_art_reveal(art_name):
     
     return frames
 
+def create_devil_from_lava_animation():
+    """Create Devil from Lava animation frames"""
+    frames = []
+    width, height = 50, 20
+    lava_wave = [3, 5, 4, 6, 5, 7, 6, 5, 4, 5, 6, 5, 4, 3, 4, 5, 6, 7, 6, 5]
+    
+    # Enhanced devil ASCII art
+    devil = [
+        "      ▄▄████▄▄      ",
+        "    ██▀▀    ▀▀██    ",
+        "   ██  ▄▄  ▄▄  ██   ",
+        "   ██ ████████ ██   ",
+        "    ██  ████  ██    ",
+        "     ▀██▄▄▄▄██▀     ",
+        "       ██████       ",
+        "      ▄██  ██▄      ",
+        "     ██      ██     ",
+        "    ██   ▄▄   ██    ",
+        "   ██   ████   ██   ",
+        "   ██  ██████  ██   ",
+        "    ██  ████  ██    ",
+        "     ▀█▄▄▄▄▄▄█▀     ",
+        "        ████        ",
+        "       ██  ██       "
+    ]
+    
+    devil_h, devil_w = len(devil), len(devil[0]) if devil else 0
+    center_x = width // 2 - devil_w // 2
+    
+    for frame in range(60):
+        grid = [[" " for _ in range(width)] for _ in range(height)]
+        
+        # Create dynamic lava
+        for x in range(width):
+            base_wave = lava_wave[x % len(lava_wave)]
+            wave_h = int(height - 5 - (base_wave + math.sin(frame * 0.3 + x * 0.2) * 2))
+            wave_h = max(0, min(height - 1, wave_h))
+            
+            for y in range(wave_h, height):
+                intensity = (height - y) / (height - wave_h + 1)
+                if intensity > 0.8:
+                    grid[y][x] = "█"
+                elif intensity > 0.6:
+                    grid[y][x] = "▓"
+                elif intensity > 0.4:
+                    grid[y][x] = "▒"
+                elif intensity > 0.2:
+                    grid[y][x] = "░"
+                else:
+                    grid[y][x] = random.choice(["*", "+", "·"])
+        
+        # Devil rising from lava
+        devil_y = height - frame * 0.4
+        if devil_y < height:
+            for dr in range(devil_h):
+                gr = int(devil_y + dr)
+                if 0 <= gr < height:
+                    for dc in range(devil_w):
+                        if center_x + dc < width and devil[dr][dc] != " ":
+                            grid[gr][center_x + dc] = devil[dr][dc]
+        
+        # Add embers and sparks
+        for _ in range(8):
+            x = random.randint(0, width - 1)
+            y = random.randint(0, height // 2)
+            if grid[y][x] == " ":
+                grid[y][x] = random.choice(["*", "+", "✦", "✧", "◦"])
+        
+        frame_str = "\n".join("".join(row) for row in grid)
+        frames.append(frame_str)
+    
+    return frames
+
+def create_wave_animation():
+    """Create Wave Pattern animation frames"""
+    frames = []
+    width, height = 70, 20
+    
+    for frame in range(100):
+        grid = [[" " for _ in range(width)] for _ in range(height)]
+        
+        # Create multiple wave layers
+        for x in range(width):
+            # Primary wave
+            y1 = int(height // 2 + math.sin(frame * 0.15 + x * 0.1) * 4)
+            # Secondary wave
+            y2 = int(height // 2 + math.sin(frame * 0.1 + x * 0.08) * 3)
+            # Tertiary wave
+            y3 = int(height // 2 + math.sin(frame * 0.2 + x * 0.12) * 2)
+            
+            # Draw waves with different characters
+            waves = [(y1, "~"), (y2, "≈"), (y3, "∼")]
+            
+            for y, char in waves:
+                if 0 <= y < height:
+                    grid[y][x] = char
+                
+                # Add wave crests
+                if abs(math.sin(frame * 0.15 + x * 0.1)) > 0.9:
+                    if 0 <= y - 1 < height:
+                        grid[y - 1][x] = "^"
+                    if 0 <= y + 1 < height:
+                        grid[y + 1][x] = "v"
+        
+        # Add foam particles
+        for _ in range(10):
+            x = random.randint(0, width - 1)
+            y = random.randint(height // 3, 2 * height // 3)
+            if grid[y][x] == " ":
+                grid[y][x] = random.choice(["·", "°", "◦", "∘"])
+        
+        frame_str = "\n".join("".join(row) for row in grid)
+        frames.append(frame_str)
+    
+    return frames
+
+def create_dna_helix_animation():
+    """Create DNA Helix animation frames"""
+    frames = []
+    width, height = 40, 25
+    
+    for frame in range(80):
+        grid = [[" " for _ in range(width)] for _ in range(height)]
+        
+        center_x = width // 2
+        
+        # Draw the DNA double helix
+        for y in range(height):
+            # Calculate the angle for this row
+            angle = frame * 0.2 + y * 0.4
+            
+            # Left and right strands
+            x1 = int(center_x + 10 * math.cos(angle))
+            x2 = int(center_x + 10 * math.cos(angle + math.pi))
+            
+            # Draw backbone
+            if 0 <= x1 < width:
+                grid[y][x1] = "●"
+            if 0 <= x2 < width:
+                grid[y][x2] = "●"
+            
+            # Draw base pairs (connecting lines) every few rows
+            if y % 4 == 0:
+                x_min, x_max = min(x1, x2), max(x1, x2)
+                for x in range(x_min + 1, x_max):
+                    if 0 <= x < width:
+                        # Use different base pair characters
+                        if (y // 4) % 4 == 0:
+                            grid[y][x] = "─"
+                        elif (y // 4) % 4 == 1:
+                            grid[y][x] = "═"
+                        elif (y // 4) % 4 == 2:
+                            grid[y][x] = "⋯"
+                        else:
+                            grid[y][x] = "┅"
+                
+                # Add base letters at connection points
+                mid_x = (x1 + x2) // 2
+                if 0 <= mid_x < width:
+                    bases = ["A", "T", "G", "C"]
+                    grid[y][mid_x] = bases[(y // 4) % 4]
+        
+        frame_str = "\n".join("".join(row) for row in grid)
+        frames.append(frame_str)
+    
+    return frames
+
+def create_spiral_galaxy_animation():
+    """Create Spiral Galaxy animation frames"""
+    frames = []
+    width, height = 60, 30
+    
+    for frame in range(120):
+        grid = [[" " for _ in range(width)] for _ in range(height)]
+        
+        cx, cy = width // 2, height // 2
+        
+        # Create spiral arms
+        for arm in range(4):
+            arm_offset = arm * math.pi / 2
+            
+            # Draw spiral arm
+            for r in range(1, min(width // 2, height)):
+                angle = arm_offset + frame * 0.05 + r * 0.2
+                
+                # Calculate position
+                x = int(cx + r * math.cos(angle))
+                y = int(cy + r * math.sin(angle) * 0.6)  # Flatten vertically
+                
+                if 0 <= x < width and 0 <= y < height:
+                    # Distance from center affects brightness
+                    distance = math.sqrt((x - cx) ** 2 + (y - cy) ** 2)
+                    
+                    if distance < 3:
+                        grid[y][x] = "◯"  # Core
+                    elif distance < 8:
+                        grid[y][x] = "●"  # Inner spiral
+                    elif distance < 15:
+                        grid[y][x] = "◉"  # Mid spiral
+                    else:
+                        grid[y][x] = random.choice(["○", "*", "·", "✦"])
+        
+        # Add background stars
+        for _ in range(30):
+            x = random.randint(0, width - 1)
+            y = random.randint(0, height - 1)
+            if grid[y][x] == " ":
+                grid[y][x] = random.choice(["·", "∘", "°", "+"])
+        
+        # Add central black hole
+        if 0 <= cx < width and 0 <= cy < height:
+            grid[cy][cx] = "⬤"
+        
+        frame_str = "\n".join("".join(row) for row in grid)
+        frames.append(frame_str)
+    
+    return frames
+
+def create_fire_animation():
+    """Create Fire Effect animation frames"""
+    frames = []
+    width, height = 50, 25
+    
+    for frame in range(120):
+        grid = [[" " for _ in range(width)] for _ in range(height)]
+        
+        # Create fire base
+        base_height = height - 3
+        
+        for x in range(width):
+            # Create random flame height
+            flame_intensity = random.uniform(0.6, 1.0)
+            flame_height = int(base_height * flame_intensity)
+            
+            # Add wind effect
+            wind_offset = int(math.sin(frame * 0.1 + x * 0.1) * 2)
+            
+            for y in range(height - flame_height, height):
+                actual_x = max(0, min(width - 1, x + wind_offset))
+                
+                # Distance from base affects character choice
+                distance_from_base = height - y
+                heat_intensity = distance_from_base / flame_height
+                
+                if heat_intensity > 0.9:
+                    grid[y][actual_x] = "█"
+                elif heat_intensity > 0.7:
+                    grid[y][actual_x] = "▓"
+                elif heat_intensity > 0.5:
+                    grid[y][actual_x] = "▒"
+                elif heat_intensity > 0.3:
+                    grid[y][actual_x] = "░"
+                elif heat_intensity > 0.1:
+                    grid[y][actual_x] = random.choice(["*", "+", "^"])
+                else:
+                    grid[y][actual_x] = random.choice(["·", "°", "∘"])
+        
+        # Add sparks and embers
+        for _ in range(15):
+            x = random.randint(0, width - 1)
+            y = random.randint(0, height // 2)
+            if grid[y][x] == " ":
+                grid[y][x] = random.choice(["*", "+", "✦", "✧", "◦", "°"])
+        
+        # Add flickering effect
+        for _ in range(width // 3):
+            x = random.randint(0, width - 1)
+            y = random.randint(height // 2, height - 1)
+            grid[y][x] = random.choice(["▄", "▀", "▌", "▐"])
+        
+        frame_str = "\n".join("".join(row) for row in grid)
+        frames.append(frame_str)
+    
+    return frames
+
 # Animation registry with frame generators
 ANIMATION_GENERATORS = {
     "1": ("Orbital Motion", create_orbital_animation),
     "2": ("Binary Stars", create_binary_stars_animation),
-    "3": ("Devil from Lava", lambda: create_ascii_art_reveal("devil")),
+    "3": ("Devil from Lava", create_devil_from_lava_animation),
     "4": ("Matrix Rain", create_matrix_rain_animation),
     "5": ("Bouncing Ball", create_bouncing_ball_animation),
-    "6": ("Wave Pattern", lambda: ["Wave pattern coming soon..."]),
-    "7": ("DNA Helix", lambda: ["DNA helix coming soon..."]),
-    "8": ("Spiral Galaxy", lambda: ["Spiral galaxy coming soon..."]),
-    "9": ("Fire Effect", lambda: ["Fire effect coming soon..."]),
+    "6": ("Wave Pattern", create_wave_animation),
+    "7": ("DNA Helix", create_dna_helix_animation),
+    "8": ("Spiral Galaxy", create_spiral_galaxy_animation),
+    "9": ("Fire Effect", create_fire_animation),
     "10": ("Animate Berserk Logo", lambda: create_ascii_art_reveal("berserk logo")),
     "11": ("Animate Monas", lambda: create_ascii_art_reveal("monas")),
     "12": ("Animate Onkar", lambda: create_ascii_art_reveal("onkar")),
@@ -323,4 +598,4 @@ def get_slideshow():
 if __name__ == '__main__':
     print("🎨 ASCII Animation Gallery (Terminal Modal Version) starting...")
     print("Available animations:", list(ANIMATION_GENERATORS.keys()))
-    app.run(debug=True, threaded=True, port=5000)
+    app.run(host='0.0.0.0', debug=False, threaded=True, port=5000)
